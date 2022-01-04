@@ -2,10 +2,9 @@ const { AuthenticationError } = require("apollo-server-express");
 const { User } = require("../models");
 const { signToken } = require("../utils/auth");
 
-// Create the functions that fulfill the queries defined in `typeDefs.js`
 const resolvers = {
   Query: {
-    // By adding context to our query, we can retrieve the logged in user without specifically searching for them
+    // me requires 3 parameters parent, args, context in that order
     me: async (parent, args, context) => {
       // If context has a `user` property, that means the user executing this query has a valid JWT and is logged in
       if (context.user) {
@@ -22,12 +21,13 @@ const resolvers = {
 
   Mutation: {
     // Creates a single user and creates a jwt token for that user
+    // wrapped in try catch block
     addUser: async (parent, args) => {
       try {
         // First we create the user
         const user = await User.create(args);
 
-        // To reduce friction for the user, we immediately sign a JSON Web Token and log the user in after they are created
+        //sign a JWT and log the user in
         const token = signToken(user);
 
         // Return an `Auth` object that consists of the signed token and user's information
@@ -55,13 +55,13 @@ const resolvers = {
         throw new AuthenticationError("Incorrect credentials");
       }
 
-      // If email and password are correct, sign user into the application with a JWT
+      // if correct credentials sign user in using token
       const token = signToken(user);
 
       return { token, user };
     },
 
-    // By adding context to our query, we can retrieve the logged in user without specifically searching for them
+    // add context to retrieve the logged in user without searching for them specifically
     saveBook: async (parent, args, context) => {
       // If context has a `user` property, that means the user executing this mutation has a valid JWT and is logged in
       if (context.user) {
@@ -71,21 +71,18 @@ const resolvers = {
           { $addToSet: { savedBooks: args.input } },
           { new: true, runValidators: true }
         );
+        //returns the updatedUser
         return updatedUser;
       }
 
-      // If user attempts to execute this mutation and isn't logged in, throw an error
+      // if user is not logged in
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    // By adding context to our query, we can retrieve the logged in user without specifically searching for them
     removeBook: async (parent, args, context) => {
-      // If context has a `user` property, that means the user executing this mutation has a valid JWT and is logged in
       if (context.user) {
         const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-
-          // Delete the book based on the book ID from the db
           { $pull: { savedBooks: { bookId: args.bookId } } },
 
           { new: true }

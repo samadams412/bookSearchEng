@@ -1,16 +1,14 @@
 const jwt = require("jsonwebtoken");
 
 // set token secret and expiration date
-const secret = "mysecretsshhhhh";
+const secret = "mysecretsshhhhhhhh";
 const expiration = "2h";
 
 module.exports = {
-  // function for our authenticated routes
   authMiddleware: function ({ req }) {
-    // allows token to be sent via  req.query or headers
-    let token = req.body.token || req.query.token || req.headers.authorization;
+    // token sent via headers
+    let token = req.headers.authorization;
 
-    // ["Bearer", "<tokenvalue>"]
     if (req.headers.authorization) {
       token = token.split(" ").pop().trim();
     }
@@ -21,6 +19,7 @@ module.exports = {
 
     // verify token and get user data out of it
     try {
+      // jwt verify with our jwt token , secret which should be in dotenv and our expiration which is set to 2hr
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
     } catch {
@@ -31,8 +30,10 @@ module.exports = {
   },
 
   signToken: function ({ username, email, _id }) {
-    const payload = { username, email, _id };
+    // payload should not contain sensitive information like passord, address, SS, etc.
 
+    const payload = { username, email, _id };
+    // jwt sign the data options object, our secret, and expiration.
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },
 };

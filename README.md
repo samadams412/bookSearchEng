@@ -7,8 +7,9 @@
 1. [Project Description](#project-description)
 2. [Installation Instructions](#installation-instructions)
 3. [Usage Information](#usage-information)
-4. [Collaborating](#collaborating)
-5. [Questions](#questions)
+4. [Demo](#demo)
+5. [Collaborating](#collaborating)
+6. [Questions](#questions)
 
 <h1 align="center">Technologies Used</h1>
 <p align="center">
@@ -37,6 +38,18 @@
 - User Sign Up.
 - Search for diffrent books using Google Book Search API.
 - Save Books to user profile.
+
+## Demo
+
+
+As you can see in the following animation, a user can type a search term (in this case, "star wars") in a search box and the results appear:
+![Animation shows "star wars" typed into a search box and books about Star Wars appearing as results.](./assets/images/demo1.gif)
+Users can Save Books, and then view them in their Books tab.
+![Animation shows user clicking "Save This Book!" button to save books that appear in search results. The button label changes to "Book Already Saved" after it is clicked and the book is saved.](./assets/images/demo2.gif)
+
+A user can view their saved books on a separate page, as shown in the following animation:
+
+![The Viewing Lernantino's Books page shows the books that the user Lernaninto has saved.](./assets/images/demo3.gif)
 
 ## Collaborating
 

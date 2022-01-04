@@ -31,7 +31,7 @@
 
 ## Installation Instructions
 
-- Simply access this deployed application: [Here](https://protected-thicket-92650.herokuapp.com/)
+- Deployed application: [Here](https://protected-thicket-92650.herokuapp.com/)
 
 ## Usage Information
 
